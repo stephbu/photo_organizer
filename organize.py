@@ -1,4 +1,5 @@
-# folderutils.py - (c)2015 stephbu
+#!/usr/bin/env python
+# organize.py - (c)2015 stephbu
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,24 +21,39 @@
 
 __author__ = "stephbu"
 
-import glob
 import os
+import folderutils
+import exifextractor
+import sys
 
-from datetime import datetime
+def by_date(source_folder, output_folder = None):
 
-def generate_folder(source_date):
-    
-    date_part = source_date.date()
-    
-    year = date_part.year
-    month = date_part.month
-    day = date_part.day
-    
-    path = "{0:04d}/{1:02d}-{2:02d}".format(year, month, day)
-    
-    return path
-    
-def enumerate(source_folder, extension):
-    for root, dirs, files in os.walk(source_folder):
-        for filename in glob.iglob(os.path.join(root, "*." + extension)):
-            yield filename
+	if(not os.path.isdir(source_folder)):
+		raise IOError
+
+	if(not output_folder is None):
+		if(not os.path.isdir(output_folder)):
+			raise IOError
+	else:
+		output_folder = source_folder
+	
+	print "reading from", output_folder
+		
+	for filename in folderutils.enumerate(source_folder, "NEF"):
+		
+		photo_date = exifextractor.dateshot(filename)
+		foldername = os.path.join(output_folder, folderutils.generate_folder(photo_date))
+		
+		print filename, foldername
+	
+arg_count = len(sys.argv)
+
+if(arg_count < 2 and arg_count > 3):
+	raise ValueError	
+
+source_folder = sys.argv[1]
+output_folder = sys.argv[2] if arg_count == 3 else None
+
+print source_folder, output_folder
+
+by_date(source_folder, output_folder)
