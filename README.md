@@ -5,7 +5,10 @@ Basic python tools to organize large directories full of NIKON .NEF images into 
 ## How To Use
 Fast Start
 - Clone this repository
-- Run In The "Work In Progress" Directory
+- Run In The "Work In Progress" Directory e.g.
+````
+python ./organize.py /users/stephbu/pictures
+````
 - Output directories created as children of current directory
 
 Advanced
