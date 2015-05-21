@@ -30,6 +30,21 @@ import folderutils
 import exifextractor
 
 
+def main(args):
+
+    arg_count = len(args)
+
+    if 1 > arg_count > 2:
+        raise ValueError
+
+    source = args[0]
+    output = args[1] if arg_count == 2 else None
+
+    print source, output
+
+    by_date(source, output)
+
+
 def by_date(source_folder, output_folder=None):
     """
     Organize NEF files in folder by DateTimeOriginal EXIF data
@@ -55,14 +70,7 @@ def by_date(source_folder, output_folder=None):
         print filename, folder_name
 
 
-arg_count = len(sys.argv)
 
-if 2 > arg_count > 3:
-    raise ValueError
 
-source = sys.argv[1]
-output = sys.argv[2] if arg_count == 3 else None
-
-print source, output
-
-by_date(source, output)
+if __name__ == "__main__":
+   main(sys.argv[1:])
