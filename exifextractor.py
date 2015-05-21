@@ -22,6 +22,7 @@
 
 __author__ = "stephbu"
 
+import os
 from PIL import Image
 from datetime import datetime
 from dateutil import tz
@@ -29,26 +30,33 @@ from dateutil import tz
 EXIF_DATE_SHOT = 306
 LOCAL_TZ = tz.tzlocal()
 
+
 def dateshot(filename):
     
-    """Extract DateTimeOriginal EXIF Tag data from specified filename"""
-    
-    if(not os.path.isfile(filename)):
+    """
+    Extract DateTimeOriginal EXIF Tag data from specified filename
+    :param filename: str
+    :rtype : datetime
+    """
+
+    assert isinstance(filename, str)
+
+    if not os.path.isfile(filename):
         raise IOError
     
     img = Image.open(filename)
-    localDateShotTag = img.tag[EXIF_DATE_SHOT]
+    localdateshottag = img.tag[EXIF_DATE_SHOT]
     
     # Pillow NEF/TIFF parser omits tag 34858:TimeZoneOffset
     try:
-        localDate = datetime.strptime(localDateShotTag, '%Y:%m:%d %H:%M:%S')
+        localdate = datetime.strptime(localdateshottag, '%Y:%m:%d %H:%M:%S')
     except ValueError:
-        print "unable to parse tag value", localDateShotTag 
+        print "unable to parse tag value", localdateshottag
         raise
     
-    localDate.replace(tzinfo = LOCAL_TZ)
+    localdate.replace(tzinfo=LOCAL_TZ)
     
     img.close()
     
-    return localDate
+    return localdate
     

@@ -19,20 +19,25 @@
 # THE SOFTWARE.
 
 """Functions to assist in folder enumeration and naming"""
+from datetime import datetime
 
 __author__ = "stephbu"
 
 import glob
 import os
 
-from datetime import datetime
 
 def generate_folder(source_date):
     
-    """Generate partial folder name based on provided source_date"""
-   
+    """
+    Generate partial folder name based on provided source_date
+    :param source_date: datetime
+    """
+
+    assert isinstance(source_date, datetime)
+
     date_part = source_date.date()
-    
+
     year = date_part.year
     month = date_part.month
     day = date_part.day
@@ -40,8 +45,9 @@ def generate_folder(source_date):
     path = "{0:04d}/{1:02d}-{2:02d}".format(year, month, day)
     
     return path
-    
-def enumerate(source_folder, extension):
+
+
+def enumerate_files(source_folder, extension):
 
     """Iterator to enumerate through source_folder and all subfolders looking for files with specified extension"""
 

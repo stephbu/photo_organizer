@@ -24,40 +24,45 @@
 __author__ = "stephbu"
 
 import os
-import folderutils
-import exifextractor
 import sys
 
-def by_date(source_folder, output_folder = None):
-	
-	"""Organize NEF files in folder by DateTimeOriginal EXIF data"""
+import folderutils
+import exifextractor
 
-	if(not os.path.isdir(source_folder)):
-		raise IOError
 
-	if(not output_folder is None):
-		if(not os.path.isdir(output_folder)):
-			raise IOError
-	else:
-		output_folder = source_folder
-	
-	print "reading from", output_folder
-		
-	for filename in folderutils.enumerate(source_folder, "NEF"):
-		
-		photo_date = exifextractor.dateshot(filename)
-		foldername = os.path.join(output_folder, folderutils.generate_folder(photo_date))
-		
-		print filename, foldername
-	
+def by_date(source_folder, output_folder=None):
+    """
+    Organize NEF files in folder by DateTimeOriginal EXIF data
+    :param source_folder: str
+    :param output_folder: str
+    """
+
+    if not os.path.isdir(source_folder):
+        raise IOError
+
+    if not output_folder is None:
+        if not os.path.isdir(output_folder):
+            raise IOError
+    else:
+        output_folder = source_folder
+
+    print "reading from", output_folder
+
+    for filename in folderutils.enumerate_files(source_folder, "NEF"):
+        photo_date = exifextractor.dateshot(filename)
+        folder_name = os.path.join(output_folder, folderutils.generate_folder(photo_date))
+
+        print filename, folder_name
+
+
 arg_count = len(sys.argv)
 
-if(arg_count < 2 and arg_count > 3):
-	raise ValueError	
+if 2 > arg_count > 3:
+    raise ValueError
 
-source_folder = sys.argv[1]
-output_folder = sys.argv[2] if arg_count == 3 else None
+source = sys.argv[1]
+output = sys.argv[2] if arg_count == 3 else None
 
-print source_folder, output_folder
+print source, output
 
-by_date(source_folder, output_folder)
+by_date(source, output)
