@@ -18,6 +18,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+"""Functions and helpers for extracting EXIF information from image files"""
+
 __author__ = "stephbu"
 
 from PIL import Image
@@ -28,6 +30,11 @@ EXIF_DATE_SHOT = 306
 LOCAL_TZ = tz.tzlocal()
 
 def dateshot(filename):
+    
+    """Extract DateTimeOriginal EXIF Tag data from specified filename"""
+    
+    if(not os.path.isfile(filename)):
+        raise IOError
     
     img = Image.open(filename)
     localDateShotTag = img.tag[EXIF_DATE_SHOT]

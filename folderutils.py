@@ -18,6 +18,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+"""Functions to assist in folder enumeration and naming"""
+
 __author__ = "stephbu"
 
 import glob
@@ -27,6 +29,8 @@ from datetime import datetime
 
 def generate_folder(source_date):
     
+    """Generate partial folder name based on provided source_date"""
+   
     date_part = source_date.date()
     
     year = date_part.year
@@ -38,6 +42,9 @@ def generate_folder(source_date):
     return path
     
 def enumerate(source_folder, extension):
+
+    """Iterator to enumerate through source_folder and all subfolders looking for files with specified extension"""
+
     for root, dirs, files in os.walk(source_folder):
         for filename in glob.iglob(os.path.join(root, "*." + extension)):
             yield filename

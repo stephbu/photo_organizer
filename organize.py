@@ -19,6 +19,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+"""Main routine for organizing photos in folders"""
+
 __author__ = "stephbu"
 
 import os
@@ -27,6 +29,8 @@ import exifextractor
 import sys
 
 def by_date(source_folder, output_folder = None):
+	
+	"""Organize NEF files in folder by DateTimeOriginal EXIF data"""
 
 	if(not os.path.isdir(source_folder)):
 		raise IOError
