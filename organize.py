@@ -63,13 +63,15 @@ def by_date(source_folder, output_folder=None):
 
     print "reading from", output_folder
 
-    for filename in folderutils.enumerate_files(source_folder, "NEF"):
-        photo_date = exifextractor.dateshot(filename)
-        folder_name = os.path.join(output_folder, folderutils.generate_folder(photo_date))
-
-        print filename, folder_name
-
-
+    for directory, filepath in folderutils.enumerate_files(source_folder, "NEF"):
+        photo_date = exifextractor.dateshot(filepath)
+        
+        timestamped_folder = os.path.join(output_folder, folderutils.generate_folder(photo_date))
+        destination_file = os.path.join(timestamped_folder, filepath[len(directory) + 1:])
+        
+        folderutils.ensure_dir(destination_file)
+        
+        print directory, filepath, destination_file
 
 
 if __name__ == "__main__":

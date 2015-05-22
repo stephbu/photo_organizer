@@ -19,13 +19,12 @@
 # THE SOFTWARE.
 
 """Functions to assist in folder enumeration and naming"""
-from datetime import datetime
 
 __author__ = "stephbu"
 
 import glob
 import os
-
+from datetime import datetime
 
 def generate_folder(source_date):
     
@@ -53,4 +52,17 @@ def enumerate_files(source_folder, extension):
 
     for root, dirs, files in os.walk(source_folder):
         for filename in glob.iglob(os.path.join(root, "*." + extension)):
-            yield filename
+            yield root, filename
+            
+            
+def ensure_dir(filename):
+    
+    """Ensure directory of specified filename exists and is a directory, or is created"""
+    
+    directory = os.path.dirname(filename)
+    
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+        
+    if not os.path.isdir(directory):
+        raise IOError("path is file")
