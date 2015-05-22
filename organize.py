@@ -24,6 +24,7 @@
 __author__ = "stephbu"
 
 import os
+import shutil
 import sys
 
 import folderutils
@@ -63,15 +64,20 @@ def by_date(source_folder, output_folder=None):
 
     print "reading from", output_folder
 
-    for directory, filepath in folderutils.enumerate_files(source_folder, "NEF"):
-        photo_date = exifextractor.dateshot(filepath)
+    for source_directory, source_file in folderutils.enumerate_files(source_folder, "NEF"):
         
+        source_filename = source_file[len(source_directory) + 1:]
+        photo_date = exifextractor.dateshot(source_file)
         timestamped_folder = os.path.join(output_folder, folderutils.generate_folder(photo_date))
-        destination_file = os.path.join(timestamped_folder, filepath[len(directory) + 1:])
+
+        destination_file = os.path.join(timestamped_folder, source_filename)        
+        if source_file == destination_file:
+            continue
         
         folderutils.ensure_dir(destination_file)
-        
-        print directory, filepath, destination_file
+        shutil.move(source_file, destination_file)     
+                
+        print source_file, destination_file
 
 
 if __name__ == "__main__":
