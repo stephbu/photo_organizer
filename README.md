@@ -50,11 +50,28 @@ even though the camera is explicitly set for the timezone (determines it's Local
 assumption that the NEF data is encoded in Local Timezone format.
 
 ## Output Folder Structure
-The code copies or moves the file without altering the original
+The code copies or moves the file without altering the original - for a source structure
 
-  <code>
-  YYYY/mm-dd/<original-filename>.NEF
-  </code>
+```
+  sourcefolder/
+              DSC0001.NEF (taken in 1/1/2014)
+              subfolder1/
+                        DSC0002.NEF (taken in 1/1/2014)
+              subfolder2/
+                        DSC0003.NEF (taken in 31/1/2014)
+```  
+
+The output would be:
+
+```
+  sourcefolder/
+              2014/
+                  01-01/
+                    DSC0001.NEF
+                    DSC0002.NEF
+                  01-31/
+                    DSC0003.NEF
+``` 
 
 ## External Linkage
 Some useful further reading on the subject
