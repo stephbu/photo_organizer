@@ -59,6 +59,7 @@ The code copies or moves the file without altering the original
 ## External Linkage
 Some useful further reading on the subject
 - EXIF Data http://en.wikipedia.org/wiki/Exchangeable_image_file_format
+- EXIF Tag Spec http://www.cipa.jp/std/documents/e/DC-008-2012_E.pdf<br/>Tag encoding information starts on page 28.
 - Pillow Source https://github.com/python-pillow/Pillow 
 - NEF http://www.nikonusa.com/en/Learn-And-Explore/Article/ftlzi4ri/nikon-electronic-format-nef.html
 - NEF File Format Description http://lclevy.free.fr/nef/
