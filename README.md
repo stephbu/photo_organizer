@@ -1,10 +1,12 @@
 # photo_organizer
 
-Basic python tools to organize large directories full of NIKON .NEF images into folders named by EXIF DateTimeOriginal tag
+Basic python tools to organize large directories full of NIKON .NEF and JPEG images into folders organized by picture date.
+The date is extracted from EXIF metadata, in priority order as follows: CreateDate, DateTimeOriginal, ModifyDate tags
 
 ## How To Use
 Fast Start
 - Clone this repository
+- Install dependency libaries Pillow/PIL, datetime, dateutil
 - Run In The "Work In Progress" Directory e.g.
 ````
 python ./organize.py /users/stephbu/pictures
@@ -72,6 +74,7 @@ The output would be:
                   01-31/
                     DSC0003.NEF
 ``` 
+
 
 ## External Linkage
 Some useful further reading on the subject
