@@ -54,12 +54,12 @@ def enumerate_files(source_folder, extension):
 
     for root, dirs, files in os.walk(source_folder):
 
-        if isinstance(extension, tuple):
-            for ext in extension:
-                for filename in glob.iglob(os.path.join(root, "*." + ''.join(either(char) for char in ext))):
-                    yield root, filename
-        else:
-            for filename in glob.iglob(os.path.join(root, "*." + ''.join(either(char) for char in extension))):
+        # support for single and multiple extensions
+        if isinstance(extension, str):
+            extension = (extension,)
+
+        for ext in extension:
+            for filename in glob.iglob(os.path.join(root, "*." + ''.join(either(char) for char in ext))):
                 yield root, filename
 
 
