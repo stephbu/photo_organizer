@@ -46,6 +46,13 @@ def dateshot(filename):
     
     img = Image.open(filename)
     localdateshottag = img.tag[EXIF_DATE_SHOT]
+
+    # Pillow started to return multiple value tuple for some new NEF files
+    # if so, this will take only the first value to try and convert into an array
+    if isinstance(localdateshottag, tuple):
+        localdateshottag = localdateshottag[0]
+
+    print localdateshottag
     
     # Pillow NEF/TIFF parser omits tag 34858:TimeZoneOffset
     try:
