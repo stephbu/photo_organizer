@@ -64,7 +64,7 @@ def by_date(source_folder, output_folder=None):
 
     print "reading from", output_folder
 
-    for source_directory, source_file in folderutils.enumerate_files(source_folder, "NEF"):
+    for source_directory, source_file in folderutils.enumerate_files(source_folder, ("NEF","JPG")):
         
         source_filename = source_file[len(source_directory) + 1:]
         photo_date = exifextractor.dateshot(source_file)

@@ -24,15 +24,22 @@ __author__ = "stephbu"
 
 import os
 from PIL import Image
+from PIL.JpegImagePlugin import JpegImageFile
 from datetime import datetime
 from dateutil import tz
 
-EXIF_DATE_SHOT = 306
+EXIF_MODIFYDATE = 306
+
+# 0x9003
+EXIF_DATETIMEORIGINAL = 36867
+
+# 0x9004
+EXIF_CREATEDATE = 36868
 LOCAL_TZ = tz.tzlocal()
 
 
 def dateshot(filename):
-    
+
     """
     Extract DateTimeOriginal EXIF Tag data from specified filename
     :param filename: str
@@ -43,27 +50,36 @@ def dateshot(filename):
 
     if not os.path.isfile(filename):
         raise IOError
-    
+
     img = Image.open(filename)
-    localdateshottag = img.tag[EXIF_DATE_SHOT]
+
+    if isinstance(img, JpegImageFile):
+        exif = img._getexif()
+    else:
+        exif = img.tag
+
+    # More robust handling of sourcing dates from different fields
+    if exif.has_key(EXIF_CREATEDATE):
+        localdateshottag = exif.get(EXIF_CREATEDATE)
+    elif exif.has_key(EXIF_DATETIMEORIGINAL):
+        localdateshottag = exif.get(EXIF_DATETIMEORIGINAL)
+    else:
+        localdateshottag = exif.get(EXIF_MODIFYDATE)
 
     # Pillow started to return multiple value tuple for some new NEF files
     # if so, this will take only the first value to try and convert into an array
     if isinstance(localdateshottag, tuple):
         localdateshottag = localdateshottag[0]
 
-    print localdateshottag
-    
     # Pillow NEF/TIFF parser omits tag 34858:TimeZoneOffset
     try:
         localdate = datetime.strptime(localdateshottag, '%Y:%m:%d %H:%M:%S')
     except ValueError:
         print "unable to parse tag value", localdateshottag
         raise
-    
+
     localdate.replace(tzinfo=LOCAL_TZ)
-    
+
     img.close()
-    
+
     return localdate
-    

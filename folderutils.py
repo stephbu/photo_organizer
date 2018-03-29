@@ -27,7 +27,7 @@ import os
 from datetime import datetime
 
 def generate_folder(source_date):
-    
+
     """
     Generate partial folder name based on provided source_date
     :param source_date: datetime
@@ -40,29 +40,37 @@ def generate_folder(source_date):
     year = date_part.year
     month = date_part.month
     day = date_part.day
-    
+
     path = "{0:04d}/{1:02d}-{2:02d}".format(year, month, day)
-    
+
     return path
 
+def either(c):
+    return '[%s%s]'%(c.lower(),c.upper()) if c.isalpha() else c
 
 def enumerate_files(source_folder, extension):
 
     """Iterator to enumerate through source_folder and all subfolders looking for files with specified extension"""
 
     for root, dirs, files in os.walk(source_folder):
-        for filename in glob.iglob(os.path.join(root, "*." + extension)):
-            yield root, filename
-            
-            
+
+        if isinstance(extension, tuple):
+            for ext in extension:
+                for filename in glob.iglob(os.path.join(root, "*." + ''.join(either(char) for char in ext))):
+                    yield root, filename
+        else:
+            for filename in glob.iglob(os.path.join(root, "*." + ''.join(either(char) for char in extension))):
+                yield root, filename
+
+
 def ensure_dir(filename):
-    
+
     """Ensure directory of specified filename exists and is a directory, or is created"""
-    
+
     directory = os.path.dirname(filename)
-    
+
     if not os.path.exists(directory):
         os.makedirs(directory)
-        
+
     if not os.path.isdir(directory):
         raise IOError("path is file")
